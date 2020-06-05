@@ -8,59 +8,54 @@ start();
 function start(){
   $(document).one("keypress", function(){
     $("#level-title").text("Level " + ++level);
-    var character = pattern;
-    clickBtnAnimation(character);
+    btnTimeout(pattern[pattern.length-1]);
+    checkClicks();
   })
+}
+
+function checkClicks(){
+  for(i=0; i<pattern.length; i++){
+    $('.btn').one('click', function(e){
+      var character = $(this).attr("id");
+      playSound(character);
+      btnTimeout(character);
+      choices.push(character);
+      if(choices[level-1] != pattern[level-1]){
+        gameOver();
+      } else {
+        levelUpTitle();
+      }
+    })
+  }
+}
+
+function levelUpTitle(){
+  setTimeout(function(){ $("#level-title").text("Level " + ++level); }, 800);
+  choices = [];
+  pattern.push(characters[getRandomNumber()]);
+  playSound(pattern[pattern.length-1]);
+  btnTimeout(pattern[pattern.length-1]);
+}
+
+$(".btn").one("click", function(e){
+  clickBtnAnimation($(this).attr("id"));
+  if(level < 1){
+    gameOver();
+  }
+})
+
+function btnTimeout(character){
+  setTimeout(function(){ clickBtnAnimation(character); }, 300);
+}
+
+function gameOver(){
+  console.log("You have failed!");
+  //location.reload(); // This is temporary
 }
 
 function playSound(character){
   var audio = new Audio('./assets/sounds/' + character + '.wav');
   audio.play();
-}
-
-function gameOver(){
-  console.log("You have failed!");
-  start();
-}
-// compare two arrays to match
-
-
-function checkClickInput(character, pattern){
-  //console.log("Pattern.length " + pattern.length);
-  for(i = 0; i < pattern.length; i++){
-
-  }
-}
-
-function getCharactersClicks(){
-  console.log(pattern);
-  console.log(choices);
-  console.log(level);
-  for(i=0; i<pattern.length;i++){
-    if(choices[i] != pattern[i]){
-      gameOver();
-    }else{
-      $(".btn").one("click", function(){
-
-      })
-    }
-  }
-}
-
-
-$(".btn").one("click", function(e){
-  if(level < 1){
-    gameOver();
-  }
-  var character = $(this).attr("id");
-  stepLevel(character);
-})
-
-function stepLevel(e){
-  clickBtnAnimation(e);
-  playSound(e);
-  choices.push(e);
-  getCharactersClicks();
 }
 
 function removeEventListener(){
