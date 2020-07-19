@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  const characters = ["link", "zelda", "epona", "ganon"];
+  const characters = ["link", "zelda", "navi", "ganon"];
   var level = 0;
   var index = 0;
   var pattern = [characters[getRandomNumber()]];
@@ -46,13 +46,21 @@ $(document).ready(function() {
     checkClicks(clicked);
   })
 
+  $('.secret').click(function(){
+    playSound("secret");
+  })
+
   function btnTimeout(character){
     setTimeout(function(){ clickBtnAnimation(character); }, 300);
   }
 
   function gameOver(){
-    console.log("You have failed!");
-    //location.reload(); // This is temporary
+    $(".btn").prop("onclick", null).off("click");
+    $('.elements-container').hide();
+    $("#level-title").text("You have lost the Triforce");
+    document.body.style.backgroundImage = "url('./assets/images/gameover-bg.jpg')";
+    playSound("gameover");
+    setTimeout(function(){ location.reload(); }, 8000)
   }
 
   function playSound(character){
