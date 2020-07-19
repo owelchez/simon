@@ -1,77 +1,81 @@
-const characters = ["link", "zelda", "epona", "ganon"];
-var level = 0;
-var pattern = [characters[getRandomNumber()]];
-var choices = [];
+$(document).ready(function() {
+  const characters = ["link", "zelda", "epona", "ganon"];
+  var level = 0;
+  var index = 0;
+  var pattern = [characters[getRandomNumber()]];
+  var choices = [];
 
-start();
+    $(document).one("keypress", function(){
+      $("#level-title").text("Level " + ++level);
+      clickBtnAnimation(pattern[pattern.length-1])
+    })
 
-function start(){
-  $(document).one("keypress", function(){
-    $("#level-title").text("Level " + ++level);
-    btnTimeout(pattern[pattern.length-1]);
-    checkClicks();
-  })
-}
+  function checkClicks(buttonClicked){
+    choices.push(buttonClicked);
 
-function checkClicks(){
-  for(i=0; i<pattern.length; i++){
-    $('.btn').one('click', function(e){
-      var character = $(this).attr("id");
-      playSound(character);
-      btnTimeout(character);
-      choices.push(character);
-      if(choices[level-1] != pattern[level-1]){
-        gameOver();
+      if(choices[index] == pattern[index]){
+        if(choices.length == pattern.length){
+          setTimeout(function(){nextLevel()}, 2000);
+        }
+        index++;
       } else {
-        levelUpTitle();
+        index = 0;
+        gameOver();
       }
+    }
+
+  function nextLevel(){
+    level++;
+    choices = [];
+    index = 0;
+    pattern.push(characters[getRandomNumber()])
+    levelUpTitle();
+  }
+
+  function levelUpTitle(){
+    $("#level-title").text("Level " + level);
+    setTimeout(function(){ clickBtnAnimation(pattern[pattern.length-1])}, 200);
+  }
+
+  $(".btn").click(function(e){
+    var clicked = this.id;
+    clickBtnAnimation(clicked);
+    if(level < 1){
+      gameOver();
+    }
+    checkClicks(clicked);
+  })
+
+  function btnTimeout(character){
+    setTimeout(function(){ clickBtnAnimation(character); }, 300);
+  }
+
+  function gameOver(){
+    console.log("You have failed!");
+    //location.reload(); // This is temporary
+  }
+
+  function playSound(character){
+    var audio = new Audio('./assets/sounds/' + character + '.wav');
+    audio.play();
+  }
+
+  function removeEventListener(){
+    $(".btn").click(function(){
+      $(".btn").off("click");
     })
   }
-}
 
-function levelUpTitle(){
-  setTimeout(function(){ $("#level-title").text("Level " + ++level); }, 800);
-  choices = [];
-  pattern.push(characters[getRandomNumber()]);
-  playSound(pattern[pattern.length-1]);
-  btnTimeout(pattern[pattern.length-1]);
-}
-
-$(".btn").one("click", function(e){
-  clickBtnAnimation($(this).attr("id"));
-  if(level < 1){
-    gameOver();
+  function clickBtnAnimation(character){
+    playSound(character);
+    $("#" + character).addClass("pressed-" + character);
+    setTimeout(function(){ $("#" + character).removeClass("pressed-" + character); }, 100);
   }
-})
 
-function btnTimeout(character){
-  setTimeout(function(){ clickBtnAnimation(character); }, 300);
-}
-
-function gameOver(){
-  console.log("You have failed!");
-  //location.reload(); // This is temporary
-}
-
-function playSound(character){
-  var audio = new Audio('./assets/sounds/' + character + '.wav');
-  audio.play();
-}
-
-function removeEventListener(){
-  $(".btn").click(function(){
-    $(".btn").off("click");
-  })
-}
-
-function clickBtnAnimation(character){
-  $("#" + character).addClass("pressed-" + character);
-  setTimeout(function(){ $("#" + character).removeClass("pressed-" + character); }, 300);
-}
-
-function getRandomNumber(){
-  var randomNumber = Math.random();
-  randomNumber = (randomNumber * 4);
-  randomNumber = Math.floor(randomNumber);
-  return randomNumber;
-}
+  function getRandomNumber(){
+    var randomNumber = Math.random();
+    randomNumber = (randomNumber * 4);
+    randomNumber = Math.floor(randomNumber);
+    return randomNumber;
+  }
+});
