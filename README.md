@@ -4,12 +4,12 @@ Clone of classic game Simon with The Legend of Zelda characters
 
 ## Start
 
-![Start](https://https://github.com/owelchez/simon/blob/master/assets/images/readme1.png)
+![Start](https://github.com/owelchez/simon/blob/master/assets/images/readme1.png)
 
 ## Playtime
 
-![Playtime](https://https://github.com/owelchez/simon/blob/master/assets/images/readme2.png)
+![Playtime](https://github.com/owelchez/simon/blob/master/assets/images/readme2.png)
 
 ## Game Over
 
-![Game Over](https://https://github.com/owelchez/simon/blob/master/assets/images/readme3.png)
+![Game Over](https://github.com/owelchez/simon/blob/master/assets/images/readme3.png)
