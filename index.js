@@ -10,6 +10,11 @@ $(document).ready(function() {
       clickBtnAnimation(pattern[pattern.length-1])
     })
 
+    $(".start").one("click", function(){
+      $("#level-title").text("Level " + ++level);
+      clickBtnAnimation(pattern[pattern.length-1])
+    })
+
   function checkClicks(buttonClicked){
     choices.push(buttonClicked);
 
@@ -22,7 +27,7 @@ $(document).ready(function() {
         index = 0;
         gameOver();
       }
-    }
+  }
 
   function nextLevel(){
     level++;
@@ -49,10 +54,6 @@ $(document).ready(function() {
   $('.secret').click(function(){
     playSound("secret");
   })
-
-  function btnTimeout(character){
-    setTimeout(function(){ clickBtnAnimation(character); }, 300);
-  }
 
   function gameOver(){
     $(".btn").prop("onclick", null).off("click");

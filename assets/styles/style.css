@@ -21,6 +21,15 @@ body {
 
 }
 
+.start {
+  font-family: 'Press Start 2P', cursive;
+  background-color: Transparent;
+  font-size: 3rem;
+  border-radius: 5px;
+  color: #58651a;
+  opacity:
+}
+
 .btn {
   margin: 25px;
   display: inline-block;
