@@ -88,3 +88,7 @@ $(document).ready(function() {
     return randomNumber;
   }
 });
+
+function btnTimeout(character){
+    setTimeout(function(){ clickBtnAnimation(character); }, 300);
+}	  
