@@ -1,3 +1,4 @@
+// Wait for document to finish loading before running code
 $(document).ready(function() {
   const characters = ["link", "zelda", "navi", "ganon"];
   var level = 0;
@@ -5,16 +6,19 @@ $(document).ready(function() {
   var pattern = [characters[getRandomNumber()]];
   var choices = [];
 
+//  Start game on keyboard key press
     $(document).one("keypress", function(){
       $("#level-title").text("Level " + ++level);
       clickBtnAnimation(pattern[pattern.length-1])
     })
 
+// Start game by clicking on button "HERE"
     $(".start").one("click", function(){
       $("#level-title").text("Level " + ++level);
       clickBtnAnimation(pattern[pattern.length-1])
     })
 
+// Compares array's index for equality, if not equal = game over
   function checkClicks(buttonClicked){
     choices.push(buttonClicked);
 
@@ -29,6 +33,7 @@ $(document).ready(function() {
       }
   }
 
+// Add a new level and update arrays choices and pattern
   function nextLevel(){
     level++;
     choices = [];
@@ -37,11 +42,13 @@ $(document).ready(function() {
     levelUpTitle();
   }
 
+// Update level title and triggers new button animation
   function levelUpTitle(){
     $("#level-title").text("Level " + level);
     setTimeout(function(){ clickBtnAnimation(pattern[pattern.length-1])}, 200);
   }
 
+// Listens to any clicks on buttons of characters
   $(".btn").click(function(e){
     var clicked = this.id;
     clickBtnAnimation(clicked);
@@ -51,12 +58,13 @@ $(document).ready(function() {
     checkClicks(clicked);
   })
 
+// IT'S A SECRET
   $('.secret').click(function(){
     playSound("secret");
   })
 
+// Shows gameover image and plays devil laughter then reloads page
   function gameOver(){
-    $(".btn").prop("onclick", null).off("click");
     $('.elements-container').hide();
     $("#level-title").text("You have lost the Triforce");
     document.body.style.backgroundImage = "url('./assets/images/gameover-bg.jpg')";
@@ -64,23 +72,20 @@ $(document).ready(function() {
     setTimeout(function(){ location.reload(); }, 8000)
   }
 
+// A function to play many characters sounds
   function playSound(character){
     var audio = new Audio('./assets/sounds/' + character + '.wav');
     audio.play();
   }
 
-  function removeEventListener(){
-    $(".btn").click(function(){
-      $(".btn").off("click");
-    })
-  }
-
+// Adds click animations to buttons
   function clickBtnAnimation(character){
     playSound(character);
     $("#" + character).addClass("pressed-" + character);
-    setTimeout(function(){ $("#" + character).removeClass("pressed-" + character); }, 100);
+    setTimeout(function(){ $("#" + character).removeClass("pressed-" + character); }, 500);
   }
 
+// Creates a random number from 1 to 4
   function getRandomNumber(){
     var randomNumber = Math.random();
     randomNumber = (randomNumber * 4);
@@ -88,7 +93,3 @@ $(document).ready(function() {
     return randomNumber;
   }
 });
-
-function btnTimeout(character){
-    setTimeout(function(){ clickBtnAnimation(character); }, 300);
-}	  
